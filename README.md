@@ -17,7 +17,7 @@
 `$ ./BURP.rb --help`   
     Tasks:  
       BURP.rb generate     # Generates a new password (Default task)  
-      BURP.rb help [TASK]  # Describe available tasks or one specific task`
+      BURP.rb help [TASK]  # Describe available tasks or one specific task
 
 `$ ./BURP.rb --help generate`
     Usage:  
