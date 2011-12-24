@@ -27,6 +27,9 @@
       -W, [--wordlist=WORDLIST]      
       -w, [--words=N]              # Default: 4  
       -s, [--seperator=SEPERATOR]  # Default: -  
+      [--alphanumeric]         
+
+Generates a new password (Default task)
 
     Generates a new password (Default task)
 
@@ -42,7 +45,14 @@
 `$ ./BURP.rb -W wordlist.txt`
     Enter your unique key: reddit.com  
     Enter your passphrase: (not echoed to terminal)    
-    Your password is: tower-wigwam-baby-salad
+    Your password is: sky-flower-boss-link
+
+**Generate an alphanumeric password.** 
+
+`$ ./BURP.rb --alphanumeric`
+    Enter your unique key: reddit.com  
+    Enter your passphrase: (not echoed to terminal) 
+    Your password is: morgue1-fur9-cell3-rosin1
 
 ## Disclaimer
 

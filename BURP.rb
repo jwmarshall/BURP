@@ -38,6 +38,7 @@ class BURP < Thor
   method_option :wordlist, :type => :string, :aliases => "-W"
   method_option :words, :type => :numeric, :aliases => "-w", :default => 4
   method_option :seperator, :type => :string, :aliases => "-s", :default => "-"
+  method_option :alphanumeric, :type => :boolean
   def generate()
     if options[:wordlist].nil?
       wordlist = DEFAULT_WORDLIST
@@ -77,17 +78,22 @@ class BURP < Thor
     end
 
     hash = Digest::SHA1.hexdigest("#{key}#{passphrase}")
-    chunk = hash.length/options[:words]
-    array = Array.new
-    chars = hash.scan(/.{#{chunk}}/)
+    chunk_size = hash.length/options[:words]
+    chunks = hash.scan(/.{#{chunk_size}}/)
+    words = Array.new
 
     for i in (0..(options[:words]-1))
-      c = chars[i]
+      c = chunks[i]
       n = c.to_i(36).modulo(wordlist.length)
-      array.push wordlist[n]
+      words.push wordlist[n]
+
+      if options[:alphanumeric]
+        r = c.to_i(36).remainder(wordlist.length).to_s
+        words[i] << r[0]
+      end
     end
 
-    password = array.join(options[:seperator])
+    password = words.join(options[:seperator])
     say "Your password is: #{password}"
   end
 end
