@@ -33,7 +33,7 @@ Generates a new password (Default task)
 
     Generates a new password (Default task)
 
-** Generate a new password.** This is the default task so we don't need to specify it.
+**Generate a new password.** This is the default task so we don't need to specify it.
 
 `$ ./BURP.rb`  
     Enter your unique key: reddit.com  
