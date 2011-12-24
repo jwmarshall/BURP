@@ -6,8 +6,6 @@
 
 **BURP** is meant to replace the passwords you use for trivial internet accounts. Instead of constantly forgetting your password to the point of writing it down, using a simple and insecure password, or worse [the same insecure password for multiple sites](http://gizmodo.com/5812545/find-out-if-your-passwords-were-leaked-by-lulzsec-right-here). Instead you create a password with **BURP**  that you can regenerate later, the idea is that you don't have to remember your password and there's nothing to lose.
 
-**BURP** is not inherently secure and comes with no warranty, I definitely would not recommend you use it to generate your bank password.
-
 --
 
 **Key** - A unique identifier, the reason for generating the password.
@@ -48,7 +46,7 @@
 
 ## Disclaimer
 
-**BURP** comes with no warranty.
+**BURP** is not inherently secure and comes with no warranty, I definitely would not recommend you use it to generate your bank password.
 
 ## To Do
 
