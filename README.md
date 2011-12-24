@@ -42,7 +42,7 @@ Generates a new password (Default task)
 
 **Generate a password using a custom wordlist.** The list provided is for example only and contains the same words as DEFAULT_WORDLIST.
 
-`$ ./BURP.rb -W wordlist.txt`
+`$ ./BURP.rb -W wordlist.txt`  
     Enter your unique key: reddit.com  
     Enter your passphrase: (not echoed to terminal)    
     Your password is: sky-flower-boss-link
