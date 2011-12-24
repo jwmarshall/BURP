@@ -4,6 +4,8 @@ require "rubygems"
 require "digest/sha1"
 require "thor"
 
+BURP_VERSION = '0.0.3'
+
 DEFAULT_WORDLIST = %w{
   abode abyss air angle apple arm army arrow artist author avenue
   baby bandit banker banner bard baron barrel beast belfry bird
@@ -37,7 +39,7 @@ class BURP < Thor
   desc "generate", "Generates a new password (Default task)"
   method_option :wordlist, :type => :string, :aliases => "-W"
   method_option :words, :type => :numeric, :aliases => "-w", :default => 4
-  method_option :seperator, :type => :string, :aliases => "-s", :default => "-"
+  method_option :separator, :type => :string, :aliases => "-s", :default => "-"
   method_option :alphanumeric, :type => :boolean
   def generate()
     if options[:wordlist].nil?
@@ -82,19 +84,38 @@ class BURP < Thor
     chunks = hash.scan(/.{#{chunk_size}}/)
     words = Array.new
 
+    if options[:alphanumeric]
+      nums = Array.new
+    end
+
     for i in (0..(options[:words]-1))
       c = chunks[i]
       n = c.to_i(36).modulo(wordlist.length)
       words.push wordlist[n]
 
       if options[:alphanumeric]
-        r = c.to_i(36).remainder(wordlist.length).to_s
-        words[i] << r[0]
+        r = c.to_i(36).remainder(wordlist.length)
+        nums.push r
       end
     end
 
-    password = words.join(options[:seperator])
+    password = words.join(options[:separator])
+
+    if options[:alphanumeric]
+      password << options[:separator]
+      nums.each do |n|
+        z = 0
+        n.to_s.scan(/.{1}/).each{ |x| z = z + x.to_i }
+        password << z.to_s[0]
+      end
+    end
+
     say "Your password is: #{password}"
+  end
+
+  desc "version", "BURP version number"
+  def version
+    puts "BURP: v#{BURP_VERSION} (https://github.com/jwmarshall/BURP)"
   end
 end
 
