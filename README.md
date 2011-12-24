@@ -49,10 +49,10 @@ Generates a new password (Default task)
 
 **Generate an alphanumeric password.** 
 
-`$ ./BURP.rb --alphanumeric`
-    Enter your unique key: reddit.com  
+`$ ./BURP.rb --alphanumeric`  
+    Enter your unique key: reddit.com     
     Enter your passphrase: (not echoed to terminal) 
-    Your password is: morgue1-fur9-cell3-rosin1
+    Your password is: morgue1-fur9-cell3-rosin1  
 
 ## Disclaimer
 
