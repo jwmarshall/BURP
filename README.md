@@ -51,7 +51,7 @@ Generates a new password (Default task)
 
 `$ ./BURP.rb --alphanumeric`  
     Enter your unique key: reddit.com     
-    Enter your passphrase: (not echoed to terminal) 
+    Enter your passphrase: (not echoed to terminal)  
     Your password is: morgue1-fur9-cell3-rosin1  
 
 ## Disclaimer
