@@ -16,18 +16,18 @@
 
 `$ ./BURP.rb --help`   
     Tasks:  
-      BURP.rb generate     # Generates a new password (Default task)  
-      BURP.rb help [TASK]  # Describe available tasks or one specific task
+        BURP.rb generate     # Generates a new password (Default task)  
+        BURP.rb help [TASK]  # Describe available tasks or one specific task
 
 `$ ./BURP.rb --help generate`
     Usage:  
-      BURP.rb generate  
+        BURP.rb generate  
   
-    Options:  
-      -W, [--wordlist=WORDLIST]      
-      -w, [--words=N]              # Default: 4  
-      -s, [--seperator=SEPERATOR]  # Default: -  
-      [--alphanumeric]         
+        Options:  
+            -W, [--wordlist=WORDLIST]      
+            -w, [--words=N]              # Default: 4  
+            -s, [--seperator=SEPERATOR]  # Default: -  
+            [--alphanumeric]         
 
 Generates a new password (Default task)
 
