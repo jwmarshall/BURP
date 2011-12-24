@@ -15,11 +15,13 @@
 ## Usage
 
 `$ ./BURP.rb --help`
+
     Tasks:  
         BURP.rb generate     # Generates a new password (Default task)  
         BURP.rb help [TASK]  # Describe available tasks or one specific task
 
 `$ ./BURP.rb --help generate`
+
     Usage:  
         BURP.rb generate  
   
@@ -35,21 +37,24 @@ Generates a new password (Default task)
 
 **Generate a new password.** This is the default task so we don't need to specify it.
 
-`$ ./BURP.rb`  
+`$ ./BURP.rb`
+
     Enter your unique key: reddit.com  
     Enter your passphrase: (not echoed to terminal)    
     Your password is: tower-wigwam-baby-salad  
 
 **Generate a password using a custom wordlist.** The list provided is for example only and contains the same words as DEFAULT_WORDLIST.
 
-`$ ./BURP.rb -W wordlist.txt`  
+`$ ./BURP.rb -W wordlist.txt`
+
     Enter your unique key: reddit.com  
     Enter your passphrase: (not echoed to terminal)    
     Your password is: sky-flower-boss-link
 
 **Generate an alphanumeric password.** 
 
-`$ ./BURP.rb --alphanumeric`  
+`$ ./BURP.rb --alphanumeric`
+
     Enter your unique key: reddit.com     
     Enter your passphrase: (not echoed to terminal)  
     Your password is: morgue1-fur9-cell3-rosin1  
