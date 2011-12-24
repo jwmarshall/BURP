@@ -34,7 +34,7 @@ DEFAULT_WORDLIST = %w{
 class BURP < Thor
   default_task :generate
 
-  desc "generate", "Generates a new password"
+  desc "generate", "Generates a new password (Default task)"
   method_option :wordlist, :type => :string, :aliases => "-W"
   method_option :words, :type => :numeric, :aliases => "-w", :default => 4
   method_option :seperator, :type => :string, :aliases => "-s", :default => "-"
