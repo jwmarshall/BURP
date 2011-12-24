@@ -76,7 +76,3 @@ Much of the inspiration for **BURP** comes from the [XKCD](http://xkcd.com/936/)
 
 The default word list was generated using this [Paivio word list generator](http://www.datavis.ca/online/paivio/).
 
-## Disclaimer
-
-**BURP** comes with no warranty. 
-
