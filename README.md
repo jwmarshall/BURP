@@ -18,7 +18,7 @@
 
     Tasks:  
         BURP.rb generate     # Generates a new password (Default task)  
-        BURP.rb help [TASK]  # Describe available tasks or one specific task
+        BURP.rb help [TASK]  # Describe available tasks or one specific task  
 
 `$ ./BURP.rb --help generate`
 
@@ -30,8 +30,6 @@
             -w, [--words=N]              # Default: 4  
             -s, [--seperator=SEPERATOR]  # Default: -  
             [--alphanumeric]         
-
-Generates a new password (Default task)
 
     Generates a new password (Default task)
 
