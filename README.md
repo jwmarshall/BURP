@@ -49,6 +49,20 @@
     Enter your passphrase: (not echoed to terminal)    
     Your password is: sky-flower-boss-link
 
+**Encrypt your custom word list**
+
+`$ ./BURP.rb encrypt wordlist.txt
+
+    Enter your passphrase: (not echoed to terminal)
+
+**Generage a password with your encrypted word list**
+
+`$ ./BURP.rb --wordlist=wordlist.txt.aes
+
+    Enter your unique key: reddit.com
+    Enter your passphrase: (not echoed to terminal)
+    Your password is: vest-season-star-feline
+
 **Generate an alphanumeric password.** 
 
 `$ ./BURP.rb --alphanumeric`
@@ -64,11 +78,12 @@
 ## To Do
 
 * Password restrictions (alphanumeric, uppercase, special characters, maxlength, etc)
-* Encrypted custom wordlist
 
 ## Security
 
 The default word list is 256 words resulting in just over 4 billion (256^4) possible permutations with the default settings (4 words). For added security roll your own custom word list with at least 256 words. 
+
+You can now encrypt your word list! 
 
 ## Notes
 
@@ -76,3 +91,4 @@ Much of the inspiration for **BURP** comes from the [XKCD](http://xkcd.com/936/)
 
 The default word list was generated using this [Paivio word list generator](http://www.datavis.ca/online/paivio/).
 
+Thanks again to Todd for showing me a possible implementation for encrypted wordlists.
