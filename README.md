@@ -51,13 +51,13 @@
 
 **Encrypt your custom word list**
 
-`$ ./BURP.rb encrypt wordlist.txt
+`$ ./BURP.rb encrypt wordlist.txt`
 
     Enter your passphrase: (not echoed to terminal)
 
 **Generage a password with your encrypted word list**
 
-`$ ./BURP.rb --wordlist=wordlist.txt.aes
+`$ ./BURP.rb --wordlist=wordlist.txt.aes`
 
     Enter your unique key: reddit.com
     Enter your passphrase: (not echoed to terminal)
