@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 
 require "rubygems"
-require "digest/sha1"
+require "openssl"
+require "base64"
+require "digest/sha2"
 require "thor"
 
-BURP_VERSION = '0.0.3'
+BURP_VERSION = '0.0.6'
 
 DEFAULT_WORDLIST = %w{
   abode abyss air angle apple arm army arrow artist author avenue
@@ -34,7 +36,11 @@ DEFAULT_WORDLIST = %w{
 }
 
 class BURP < Thor
+  include Thor::Actions
   default_task :generate
+
+  BURP_CIPHER = "AES-256-CFB"
+  NIL_SHA256 = "\343\260\304B\230\374\034\024\232\373\364\310\231o\271$'\256A\344d\233\223L\244\225\231\exR\270U"
 
   desc "generate", "Generates a new password (Default task)"
   method_option :wordlist, :type => :string, :aliases => "-W"
@@ -42,44 +48,49 @@ class BURP < Thor
   method_option :separator, :type => :string, :aliases => "-s", :default => "-"
   method_option :alphanumeric, :type => :boolean
   def generate()
-    if options[:wordlist].nil?
-      wordlist = DEFAULT_WORDLIST
-    else
-      wordlist = Array.new
-      if ! options[:wordlist].match(/^\//)
-        File.open("#{Dir.pwd}/#{options[:wordlist]}", "r") do |f|
-          f.each_line { |line| wordlist.push line.chomp }
-        end
-      end
-    end
+    sha256 = Digest::SHA256.new
 
-    if wordlist.length < 256
-      say "Error: wordlist must have at least 256 words", :red
-      exit
-    end
-
-    if options[:words] != 4 && options[:words] != 5
-      say "Error: words in hash must be either 4 or 5", :red # for now avoid lost bits (remainder)
-      exit
-    end
-
-    key = Digest::SHA1.hexdigest(ask "Enter your unique key: ")
-    if key == "da39a3ee5e6b4b0d3255bfef95601890afd80709" # nil sha1
+    key = sha256.digest(ask "Enter your unique key: ")
+    if key == NIL_SHA256
       say "Error: key must not be nil", :red
       exit
     end
 
     system "stty -echo" # don't echo our passphrase back to the terminal
-    passphrase = Digest::SHA1.hexdigest(ask "Enter your secret passphrase: ")
+    passphrase = sha256.digest(ask "Enter your secret passphrase: ")
     puts # new line
     system "stty echo"
 
-    if passphrase == "da39a3ee5e6b4b0d3255bfef95601890afd80709" # nil sha1
+    if passphrase == NIL_SHA256
       say "Error: passphrase must not be nil", :red
       exit
     end
+    
+    if options[:wordlist].nil?
+      wordlist = DEFAULT_WORDLIST
+    elsif options[:wordlist].match(/\.aes$/)
+      e_wordlist = self.read_file(options[:wordlist])
+      cipher = OpenSSL::Cipher.new(BURP_CIPHER)
+      cipher.decrypt
+      cipher.key = passphrase
+      cipher.iv = e_wordlist.slice(0,16)
+      d_wordlist = cipher.update(Base64.decode64(e_wordlist)) + cipher.final
+      d_wordlist.gsub!(/^.{16}/,'') # remove iv prefix
+      e_wordlist = nil
 
-    hash = Digest::SHA1.hexdigest("#{key}#{passphrase}")
+      wordlist = Array.new
+      d_wordlist.scan(/^.*\n/).each { |w| wordlist.push w.chomp }
+      d_wordlist = nil
+
+      if wordlist.length < 256
+        say "Error: Invalid wordlist", :red
+        exit
+      end
+    else
+      wordlist = self.wordlist_from_file(options[:wordlist])
+    end
+
+    hash = sha256.hexdigest("#{key}#{passphrase}")
     chunk_size = hash.length/options[:words]
     chunks = hash.scan(/.{#{chunk_size}}/)
     words = Array.new
@@ -113,9 +124,66 @@ class BURP < Thor
     say "Your password is: #{password}"
   end
 
+  desc "encrypt FILE", "Encrypt a file using #{BURP_CIPHER} and your passphrase"
+  def encrypt(file)
+    contents = self.read_file(file)
+
+    sha256 = Digest::SHA256.new
+    system "stty -echo"
+    passphrase = sha256.digest(ask "Enter your secret passphrase: ")
+    puts
+    system "stty echo"
+
+    if passphrase == NIL_SHA256
+      say "Error: passphrase must not be nil", :red
+      exit
+    end
+
+    cipher = OpenSSL::Cipher.new(BURP_CIPHER)
+    cipher.encrypt
+    cipher.key = passphrase
+    cipher.iv = initialization_vector = cipher.random_iv
+    e_contents = cipher.update(contents) + cipher.final
+
+    self.write_file("#{file}.aes", Base64.encode64(initialization_vector + e_contents))
+  end
+
   desc "version", "BURP version number"
   def version
     puts "BURP: v#{BURP_VERSION} (https://github.com/jwmarshall/BURP)"
+  end
+
+  no_tasks do
+    def wordlist_from_file(file)
+      wordlist = Array.new
+      file = "#{Dir.pwd}/#{file}" if ! file.match(/^\//)
+      File.open(file, "r") do |f|
+        f.each_line { |line| wordlist.push line.chomp }
+      end
+      if wordlist.length < 256
+        say "Error: word list must have at least 256 words", :red
+        exit
+      end
+      return wordlist
+    end
+
+    def read_file(file)
+      file = "#{Dir.pwd}/#{file}" if ! file.match(/^\//)
+      File.open(file, "r") do |f|
+        return f.read
+      end
+    end
+
+    def write_file(file, content)
+      file = "#{Dir.pwd}/#{file}" if ! file.match(/^\//)
+      if File.exists?(file)
+        say "File exists!"
+        exit
+      end
+      File.open(file, "w+") do |f|
+        f.puts content
+      end
+    end
   end
 end
 
